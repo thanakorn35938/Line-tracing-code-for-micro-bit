@@ -1,0 +1,30 @@
+let refr = 0
+let refl = 0
+let sensor_r = 0
+let sensor_l = 0
+input.onButtonPressed(Button.A, () => {
+    basic.showNumber(sensor_l)
+})
+input.onButtonPressed(Button.B, () => {
+    basic.showNumber(sensor_r)
+})
+while (!(input.buttonIsPressed(Button.A))) {
+    basic.showIcon(IconNames.No)
+}
+basic.showIcon(IconNames.Yes)
+refl = 1
+refr = 1
+basic.forever(() => {
+    sensor_l += pins.digitalReadPin(DigitalPin.P0)
+    sensor_r += pins.digitalReadPin(DigitalPin.P1)
+    if (refl < sensor_l && refr < sensor_r) {
+        iBIT.Motor(ibitMotor.Forward, 90)
+    } else if (refl < sensor_l && refr < sensor_r) {
+        iBIT.Motor(ibitMotor.Forward, 90)
+        music.playTone(587, music.beat(BeatFraction.Half))
+    } else if (refl < sensor_l && refr > sensor_r) {
+        iBIT.Turn(ibitTurn.Left, 70)
+    } else if (refl > sensor_l && refr < sensor_r) {
+        iBIT.Turn(ibitTurn.Right, 50)
+    }
+})
